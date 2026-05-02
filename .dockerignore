@@ -1,0 +1,7 @@
+.git
+.od
+node_modules
+e2e
+docs/screenshots
+*.test.ts
+*.test.js

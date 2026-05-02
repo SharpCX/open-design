@@ -8,7 +8,7 @@ RUN corepack enable && corepack prepare pnpm@10.33.2 --activate
 
 WORKDIR /app
 
-# Copy repo contents
+# Copy everything (use .dockerignore to exclude .git, node_modules, etc.)
 COPY . .
 
 # PATCH: bind to 0.0.0.0 instead of 127.0.0.1 (required for cloud deployment)
@@ -31,5 +31,4 @@ EXPOSE 7456
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
   CMD curl -f http://localhost:${PORT:-7456}/api/health || exit 1
 
-# Railway provides PORT env var; map to OD_PORT and start daemon
 CMD ["sh", "-c", "export OD_PORT=${PORT:-7456} && echo \"[deploy] starting on 0.0.0.0:${OD_PORT}\" && exec node apps/daemon/dist/cli.js --no-open --port ${OD_PORT}"]
