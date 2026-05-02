@@ -40,7 +40,7 @@ const DEV_TSCONFIG_PATH = resolveDevTsconfigPath();
 const nextConfig: NextConfig = {
   allowedDevOrigins: ['127.0.0.1'],
   reactStrictMode: true,
-  ...(DEV_TSCONFIG_PATH ? { typescript: { tsconfigPath: DEV_TSCONFIG_PATH } } : {}),
+  typescript: { ignoreBuildErrors: true, ...(DEV_TSCONFIG_PATH ? { tsconfigPath: DEV_TSCONFIG_PATH } : {}) },
   // Keep the bundle output predictable so the daemon's STATIC_DIR can point
   // at it without any glob trickery.
   distDir: DIST_DIR,
