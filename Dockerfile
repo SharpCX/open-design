@@ -23,12 +23,12 @@ RUN pnpm --filter @open-design/web build
 # Build daemon (TypeScript -> apps/daemon/dist/)
 RUN pnpm --filter @open-design/daemon build
 
-# Create runtime data directory
-RUN mkdir -p .od/projects .od/artifacts
+# Create volume mount point for persistent data
+RUN mkdir -p /data
 
 EXPOSE 7456
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
   CMD curl -f http://localhost:${PORT:-7456}/api/health || exit 1
 
-CMD ["sh", "-c", "export OD_PORT=${PORT:-7456} && echo \"[deploy] starting on 0.0.0.0:${OD_PORT}\" && exec node apps/daemon/dist/cli.js --no-open --port ${OD_PORT}"]
+CMD ["sh", "-c", "export OD_PORT=${PORT:-7456} OD_DATA_DIR=/data && echo \"[deploy] starting on 0.0.0.0:${OD_PORT} data=/data\" && exec node apps/daemon/dist/cli.js --no-open --port ${OD_PORT}"]
