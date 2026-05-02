@@ -12,7 +12,7 @@ WORKDIR /app
 COPY . .
 
 # PATCH: bind to 0.0.0.0 instead of 127.0.0.1 (required for cloud deployment)
-RUN sed -i "s/app\.listen(port, '127\.0\.0\.1'/app.listen(port, '0.0.0.0'/" apps/daemon/server.ts
+RUN sed -i "s/app\.listen(port, '127\.0\.0\.1'/app.listen(port, '0.0.0.0'/" apps/daemon/src/server.ts
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
